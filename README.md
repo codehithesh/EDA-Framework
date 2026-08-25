@@ -1,2 +1,2 @@
-# EDA Template
-EDA Template for Data Analysis.
+# EDA Framework 🚀
+EDA Framework for Data Analysis.
