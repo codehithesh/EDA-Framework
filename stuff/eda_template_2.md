@@ -2,7 +2,12 @@
 
 *A complete workflow: data understanding → cleaning → EDA → business/product metrics → inference → modeling → recommendations. Sections marked "(if applicable)" are conditional branches — skip them when they don't apply to the dataset in front of you.*
 
-## 0. Define the Question
+## 0. Company Context & Value Engine
+- Revenue sources (the economic engine)
+- Influence sources (the growth & demand levers)
+- Historical high-level revenue summaries & traffic breakdowns
+
+## 1. Define the Question
 - Business question / hypothesis to investigate
 - Success metric(s) — what "good" looks like
 - Stakeholders and how the analysis will be used
@@ -11,7 +16,7 @@
 - Known sampling or selection biases
 - Data freshness / time range relevance
 
-## 1. Analysis Setup
+## 2. Analysis Setup
 - Load data
 - Shape
 - Data types / info
@@ -22,7 +27,7 @@
 - Unique values / cardinality
 - Basic data dictionary
 
-## 2. Multi-Table / Relational Checks (if applicable)
+## 3. Multi-Table / Relational Checks (if applicable)
 *Only relevant when the analysis spans more than one table.*
 - Identify join keys and relationship type (1:1, 1:many, many:many)
 - Referential integrity — orphaned keys on either side
@@ -31,7 +36,7 @@
 - Schema drift across tables/sources (renamed or type-changed columns)
 - Primary key uniqueness per table
 
-## 3. Clean & Optimise Data
+## 4. Clean & Optimise Data
 - Fix known dtypes
 - Convert timestamp columns to datetime
 - Handle missing values
@@ -43,13 +48,13 @@
 - Check impossible / invalid numerical values
 - Check negative values where impossible
 
-## 4. Structural Feature Creation
+## 5. Structural Feature Creation
 *Date and location parsing has no dependency on stats, and unlocks grouped analysis below — do it right after cleaning, not after stats.*
 - Date: year, month, day, weekday, hour, minute, second, millisecond
 - Time periods: week, quarter, weekend/weekday
 - Location: city, place, pin code, state, country, area
 
-## 5. Unstructured Data Prep (if applicable)
+## 6. Unstructured Data Prep (if applicable)
 *Only relevant when the dataset includes free text or images.*
 
 **Text**
@@ -65,7 +70,7 @@
 - Corrupt or unreadable file check
 - Duplicate or near-duplicate detection
 
-## 6. First-Pass Descriptive Stats
+## 7. First-Pass Descriptive Stats
 *Covers all variables, including the target — now with weekday/region fields available for grouped stats.*
 - Row granularity
 - Target variable and predictors
@@ -74,7 +79,7 @@
 - Numerical vs categorical variable summaries
 - Grouped statistics / distribution by major segments (e.g. by weekday, by region)
 
-## 7. Outlier Detection & Treatment
+## 8. Outlier Detection & Treatment
 *Ahead of relationship/temporal analysis — correlations, trend lines, and growth rates are all outlier-sensitive, so this needs to happen before you compute them, not after.*
 - Target-variable outliers
 - Dataset-wide outliers
@@ -85,15 +90,15 @@
 - Investigate cause
 - Decide: retain, transform, cap, or remove
 
-## 8. Derived Feature Creation
-*These depend on what's above — bands need quartiles from Section 6, ratios/growth need outlier-treated numbers from Section 7.*
-- Bands: Low / Medium / High / Premium, or Q1–Q4 (using quartiles from Section 6)
+## 9. Derived Feature Creation
+*These depend on what's above — bands need quartiles from Section 7, ratios/growth need outlier-treated numbers from Section 8.*
+- Bands: Low / Medium / High / Premium, or Q1–Q4 (using quartiles from Section 7)
 - Business-specific derived variables
 - Ratios / percentages
 - Growth variables
 - Customer-level features
 
-## 9. Relationship Analysis
+## 10. Relationship Analysis
 - Numerical vs numerical
 - Categorical vs numerical
 - Categorical vs categorical
@@ -106,14 +111,14 @@
 - Confounding variables
 - Correlation ≠ causation check
 
-## 10. High-Dimensional / Multicollinearity Check (if applicable)
+## 11. High-Dimensional / Multicollinearity Check (if applicable)
 *Relevant once you're past roughly 15–20 predictors, or ahead of a regression-based model.*
 - Variance Inflation Factor (VIF) per predictor
 - Correlation-based redundancy check
 - Dimensionality reduction (PCA) if needed
 - Feature clustering / grouping highly correlated predictors
 
-## 11. Temporal Analysis
+## 12. Temporal Analysis
 - Daily / weekly / monthly / quarterly / yearly trends
 - Weekday vs weekend
 - Hour-of-day patterns
@@ -124,7 +129,7 @@
 - Rolling averages
 - Trend breaks / unusual periods
 
-## 12. Time-Series Diagnostics (if forecasting)
+## 13. Time-Series Diagnostics (if forecasting)
 *Only relevant when the target is being forecast forward in time.*
 - Stationarity tests (ADF, KPSS)
 - Trend / seasonal / residual decomposition
@@ -133,7 +138,7 @@
 - Lag feature creation
 - Train/test split respects time order — no shuffling
 
-## 13. Revenue & KPI Lens
+## 14. Revenue & KPI Lens
 *The KPIs here are mostly the same revenue/transaction/customer numbers reframed as tracked metrics, so they belong together.*
 - Total transactions, unique customers, AOV
 - Revenue, revenue share
@@ -143,7 +148,7 @@
 - Conversion / rate KPIs
 - Contribution analysis, Pareto (80/20)
 
-## 14. Customer Profile & Segmentation
+## 15. Customer Profile & Segmentation
 - Unique customers, new vs returning
 - Frequency, monetary value, average customer value
 - Purchase behaviour, customer distribution
@@ -154,7 +159,7 @@
 - High-value / low-value / at-risk customers
 - Growth opportunities, segment profitability
 
-## 15. Product Analytics — Retention, Engagement & Experimentation
+## 16. Product Analytics — Retention, Engagement & Experimentation
 
 **Retention**
 - N-day retention (D1 / D7 / D30)
@@ -181,9 +186,9 @@
 - Primary metric + guardrail metrics
 - Novelty / primacy effects
 - Segment-level (heterogeneous) treatment effects
-- Statistical vs practical significance (uses the toolkit in 16–18)
+- Statistical vs practical significance (uses the toolkit in 17–19)
 
-## 16. Probability Toolkit
+## 17. Probability Toolkit
 - Relevant probability distributions
 - Event probabilities
 - Conditional probabilities
@@ -192,14 +197,14 @@
 - Central Limit Theorem
 - Standard error
 
-## 17. Confidence Intervals
+## 18. Confidence Intervals
 - Mean confidence intervals
 - Proportion confidence intervals
 - Difference in means
 - Difference in proportions
 - Bootstrap confidence intervals where appropriate
 
-## 18. Hypothesis Testing
+## 19. Hypothesis Testing
 *Assumption checks come before test selection, not after — you can't correctly pick a test without knowing if the data meets its assumptions.*
 - Define null and alternative hypotheses
 - Check assumptions first: normality, independence, variance, sample size, multiple-testing considerations
@@ -210,7 +215,7 @@
 - Statistical vs practical significance
 - Follow-up: robust / non-parametric alternatives if assumptions fail, sensitivity analysis
 
-## 19. Model Preparation & Baseline
+## 20. Model Preparation & Baseline
 - Define target and predictors
 - Check target leakage
 - Feature selection, encoding, scaling
@@ -220,28 +225,28 @@
 - Evaluation metric(s)
 - Feature importance / interpretation
 
-## 20. Visual Deliverables Checklist
-*Coverage check — charts should happen inline as you go through 4–15, not get batched at the end.*
-- Distribution charts (6)
-- Outlier charts (7)
-- Relationship charts + correlation heatmap (9)
-- Multicollinearity / PCA charts (10, if applicable)
-- Time-series charts (11)
-- Time-series decomposition / ACF-PACF charts (12, if applicable)
-- Geographic charts (13)
-- Segment / KPI charts (13–14)
-- Retention / funnel charts (15)
-- Text/image distribution charts (5, if applicable)
+## 21. Visual Deliverables Checklist
+*Coverage check — charts should happen inline as you go through 5–16, not get batched at the end.*
+- Distribution charts (7)
+- Outlier charts (8)
+- Relationship charts + correlation heatmap (10)
+- Multicollinearity / PCA charts (11, if applicable)
+- Time-series charts (12)
+- Time-series decomposition / ACF-PACF charts (13, if applicable)
+- Geographic charts (14)
+- Segment / KPI charts (14–15)
+- Retention / funnel charts (16)
+- Text/image distribution charts (6, if applicable)
 
-## 21. Key Business Answers
-*Ties back to Section 0.*
+## 22. Key Business Answers
+*Ties back to Section 1.*
 - What happened? Why? Where? When?
 - Who contributed most? What changed?
 - What's driving the target?
 - Biggest problems / opportunities
-- Does this answer the question posed in Section 0?
+- Does this answer the question posed in Section 1?
 
-## 22. Recommendations
+## 23. Recommendations
 - Key findings
 - Business implications
 - Recommended actions, prioritized
